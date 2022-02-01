@@ -54,14 +54,14 @@ public class ScanApplication {
    * @param message Message received.
    */
   @RabbitListener(queues = {RabbitMqConfig.QUEUE_HTTP_SERVICES})
-  public void receiveMessage(String message) {
+  public static void receiveMessage(String message) {
     HttpService httpMessage = new HttpService();
     try {
       httpMessage.fromJson(message);
       LogManager.getLogger(ScanApplication.class).info(String.format("Gospider url : %s", httpMessage.toUrl()));
       OsCommandExecutor osCommandExecutor = new OsCommandExecutor();
-      String command = String.format("/root/go/bin/gospider -s \"%s\" -a -c 10 -q", httpMessage.toUrl());
-      StreamGobbler streamGobbler = osCommandExecutor.execute(command);
+      String command = String.format("/root/go/bin/gospider -s %s -a -c 10 -q", httpMessage.toUrl());
+      StreamGobbler streamGobbler = osCommandExecutor.execute(command, true);
       if (streamGobbler != null) {
         LogManager.getLogger(ScanApplication.class).info(String.format("GoSpider exited with status %s ", streamGobbler.getExitStatus()));
         if (streamGobbler.getExitStatus() == 0) {
