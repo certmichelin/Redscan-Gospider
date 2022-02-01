@@ -60,7 +60,7 @@ public class ScanApplication {
       httpMessage.fromJson(message);
       LogManager.getLogger(ScanApplication.class).info(String.format("Gospider url : %s", httpMessage.toUrl()));
       OsCommandExecutor osCommandExecutor = new OsCommandExecutor();
-      String command = String.format("/root/go/bin/gospider -s %s -a -c 10 -q", httpMessage.toUrl());
+      String command = String.format("/root/go/bin/gospider -s %s -c 10 -q", httpMessage.toUrl());
       StreamGobbler streamGobbler = osCommandExecutor.execute(command, true);
       if (streamGobbler != null) {
         LogManager.getLogger(ScanApplication.class).info(String.format("GoSpider exited with status %s ", streamGobbler.getExitStatus()));
